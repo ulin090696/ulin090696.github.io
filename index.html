@@ -1,0 +1,1231 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css"><link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css"><link rel="stylesheet" href="css/L.Control.Locate.min.css">
+        <link rel="stylesheet" href="css/qgis2web.css">
+        <link rel="stylesheet" href="css/Control.OSMGeocoder.css">
+        <link rel="stylesheet" href="css/leaflet-measure.css">
+        <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        </style>
+        <title></title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script><script src="js/L.Control.Locate.min.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/leaflet.wms.js"></script>
+        <script src="js/Control.OSMGeocoder.js"></script>
+        <script src="js/leaflet-measure.js"></script>
+        <script src="data/ProjectIDSKRB_Merapi_2.js"></script>
+        <script src="data/ProjectIDSGuna_Lahan_3.js"></script>
+        <script src="data/PenggunaanLahanTerancam_4.js"></script>
+        <script src="data/ProjectIDSBatas_Desa_5.js"></script>
+        <script src="data/DesaTerancam_6.js"></script>
+        <script src="data/Kecamatan_7.js"></script>
+        <script>
+        var highlightLayer;
+        function highlightFeature(e) {
+            highlightLayer = e.target;
+
+            if (e.target.feature.geometry.type === 'LineString') {
+              highlightLayer.setStyle({
+                color: '#ffff00',
+              });
+            } else {
+              highlightLayer.setStyle({
+                fillColor: '#ffff00',
+                fillOpacity: 1
+              });
+            }
+        }
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:28, minZoom:1
+        }).fitBounds([[-7.75345956338,110.267969151],[-7.57288463733,110.605210993]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.addAttribution('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a>');
+        L.control.locate().addTo(map);
+        var measureControl = new L.Control.Measure({
+            primaryLengthUnit: 'meters',
+            secondaryLengthUnit: 'kilometers',
+            primaryAreaUnit: 'sqmeters',
+            secondaryAreaUnit: 'hectares'
+        });
+        measureControl.addTo(map);
+        var bounds_group = new L.featureGroup([]);
+        var basemap0 = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors,<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
+            maxZoom: 28
+        });
+        basemap0.addTo(map);
+        function setBounds() {
+        }
+        var img_ProjectIDSDEM_Sleman_0 = 'data/ProjectIDSDEM_Sleman_0.png';
+        var img_bounds_ProjectIDSDEM_Sleman_0 = [[-7.94432365303,110.073027247],[-7.25568302404,110.78344868]];
+        var overlay_ProjectIDSDEM_Sleman_0 = new L.imageOverlay(img_ProjectIDSDEM_Sleman_0, img_bounds_ProjectIDSDEM_Sleman_0);
+        bounds_group.addLayer(overlay_ProjectIDSDEM_Sleman_0);
+        map.addLayer(overlay_ProjectIDSDEM_Sleman_0);
+        var overlay_Citra_Sleman_1 = L.WMS.layer("http://localhost:8080/geoserver/Project-IDS/wms", "Citra_Sleman", {
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+        });
+        map.addLayer(overlay_Citra_Sleman_1);
+        function pop_ProjectIDSKRB_Merapi_2(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['ID'] !== null ? Autolinker.link(String(feature.properties['ID'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['KRB'] !== null ? Autolinker.link(String(feature.properties['KRB'])) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_ProjectIDSKRB_Merapi_2_0(feature) {
+            switch(String(feature.properties['KRB'])) {
+                case 'KRB 1':
+                    return {
+                pane: 'pane_ProjectIDSKRB_Merapi_2',
+                opacity: 1,
+                color: 'rgba(0,0,0,0.22)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,255,178,0.22)',
+            }
+                    break;
+                case 'KRB 2':
+                    return {
+                pane: 'pane_ProjectIDSKRB_Merapi_2',
+                opacity: 1,
+                color: 'rgba(0,0,0,0.22)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(253,141,60,0.22)',
+            }
+                    break;
+                case 'KRB 3':
+                    return {
+                pane: 'pane_ProjectIDSKRB_Merapi_2',
+                opacity: 1,
+                color: 'rgba(0,0,0,0.22)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(189,0,38,0.22)',
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_ProjectIDSKRB_Merapi_2');
+        map.getPane('pane_ProjectIDSKRB_Merapi_2').style.zIndex = 402;
+        map.getPane('pane_ProjectIDSKRB_Merapi_2').style['mix-blend-mode'] = 'normal';
+        var layer_ProjectIDSKRB_Merapi_2 = new L.geoJson(json_ProjectIDSKRB_Merapi_2, {
+            attribution: '<a href=""></a>',
+            pane: 'pane_ProjectIDSKRB_Merapi_2',
+            onEachFeature: pop_ProjectIDSKRB_Merapi_2,
+            style: style_ProjectIDSKRB_Merapi_2_0,
+        });
+        bounds_group.addLayer(layer_ProjectIDSKRB_Merapi_2);
+        map.addLayer(layer_ProjectIDSKRB_Merapi_2);
+        function pop_ProjectIDSGuna_Lahan_3(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2"><strong>FID_per_ka</strong><br />' + (feature.properties['FID_per_ka'] !== null ? Autolinker.link(String(feature.properties['FID_per_ka'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>KAB_2008</strong><br />' + (feature.properties['KAB_2008'] !== null ? Autolinker.link(String(feature.properties['KAB_2008'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>PROV</strong><br />' + (feature.properties['PROV'] !== null ? Autolinker.link(String(feature.properties['PROV'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>FID_pl_340</strong><br />' + (feature.properties['FID_pl_340'] !== null ? Autolinker.link(String(feature.properties['FID_pl_340'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>PL_T2</strong><br />' + (feature.properties['PL_T2'] !== null ? Autolinker.link(String(feature.properties['PL_T2'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">LUAS_m</th>\
+                        <td>' + (feature.properties['LUAS_m'] !== null ? Autolinker.link(String(feature.properties['LUAS_m'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>LUAS_ha</strong><br />' + (feature.properties['LUAS_ha'] !== null ? Autolinker.link(String(feature.properties['LUAS_ha'])) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_ProjectIDSGuna_Lahan_3_0(feature) {
+            switch(String(feature.properties['PL_T2'])) {
+                case 'BANDARA':
+                    return {
+                pane: 'pane_ProjectIDSGuna_Lahan_3',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(62,194,227,1.0)',
+            }
+                    break;
+                case 'BELUKAR/SEMAK':
+                    return {
+                pane: 'pane_ProjectIDSGuna_Lahan_3',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(61,214,104,1.0)',
+            }
+                    break;
+                case 'HUTAN':
+                    return {
+                pane: 'pane_ProjectIDSGuna_Lahan_3',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(209,148,98,1.0)',
+            }
+                    break;
+                case 'KEBUN':
+                    return {
+                pane: 'pane_ProjectIDSGuna_Lahan_3',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(51,206,168,1.0)',
+            }
+                    break;
+                case 'PASIR DARAT':
+                    return {
+                pane: 'pane_ProjectIDSGuna_Lahan_3',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(148,201,56,1.0)',
+            }
+                    break;
+                case 'PEMUKIMAN':
+                    return {
+                pane: 'pane_ProjectIDSGuna_Lahan_3',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(230,243,44,1.0)',
+            }
+                    break;
+                case 'RUMPUT':
+                    return {
+                pane: 'pane_ProjectIDSGuna_Lahan_3',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(200,186,60,1.0)',
+            }
+                    break;
+                case 'SAWAH IRIGASI':
+                    return {
+                pane: 'pane_ProjectIDSGuna_Lahan_3',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(207,32,199,1.0)',
+            }
+                    break;
+                case 'SAWAH TADAH HUJAN':
+                    return {
+                pane: 'pane_ProjectIDSGuna_Lahan_3',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(236,100,102,1.0)',
+            }
+                    break;
+                case 'TANAH BERBATU':
+                    return {
+                pane: 'pane_ProjectIDSGuna_Lahan_3',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(200,99,150,1.0)',
+            }
+                    break;
+                case 'TEGALAN':
+                    return {
+                pane: 'pane_ProjectIDSGuna_Lahan_3',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(48,21,220,1.0)',
+            }
+                    break;
+                case 'TUBUH AIR':
+                    return {
+                pane: 'pane_ProjectIDSGuna_Lahan_3',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(115,223,91,1.0)',
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_ProjectIDSGuna_Lahan_3');
+        map.getPane('pane_ProjectIDSGuna_Lahan_3').style.zIndex = 403;
+        map.getPane('pane_ProjectIDSGuna_Lahan_3').style['mix-blend-mode'] = 'normal';
+        var layer_ProjectIDSGuna_Lahan_3 = new L.geoJson(json_ProjectIDSGuna_Lahan_3, {
+            attribution: '<a href=""></a>',
+            pane: 'pane_ProjectIDSGuna_Lahan_3',
+            onEachFeature: pop_ProjectIDSGuna_Lahan_3,
+            style: style_ProjectIDSGuna_Lahan_3_0,
+        });
+        bounds_group.addLayer(layer_ProjectIDSGuna_Lahan_3);
+        map.addLayer(layer_ProjectIDSGuna_Lahan_3);
+        function pop_PenggunaanLahanTerancam_4(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['STATUS_KOT'] !== null ? Autolinker.link(String(feature.properties['STATUS_KOT'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['KODE_2008'] !== null ? Autolinker.link(String(feature.properties['KODE_2008'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['DESA_2008'] !== null ? Autolinker.link(String(feature.properties['DESA_2008'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['KEC_2008'] !== null ? Autolinker.link(String(feature.properties['KEC_2008'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['KAB_2008'] !== null ? Autolinker.link(String(feature.properties['KAB_2008'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['PROP_2008'] !== null ? Autolinker.link(String(feature.properties['PROP_2008'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['ID'] !== null ? Autolinker.link(String(feature.properties['ID'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['KRB'] !== null ? Autolinker.link(String(feature.properties['KRB'])) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_PenggunaanLahanTerancam_4_0() {
+            return {
+                pane: 'pane_PenggunaanLahanTerancam_4',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(61,199,75,1.0)',
+            }
+        }
+        map.createPane('pane_PenggunaanLahanTerancam_4');
+        map.getPane('pane_PenggunaanLahanTerancam_4').style.zIndex = 404;
+        map.getPane('pane_PenggunaanLahanTerancam_4').style['mix-blend-mode'] = 'normal';
+        var layer_PenggunaanLahanTerancam_4 = new L.geoJson(json_PenggunaanLahanTerancam_4, {
+            attribution: '<a href=""></a>',
+            pane: 'pane_PenggunaanLahanTerancam_4',
+            onEachFeature: pop_PenggunaanLahanTerancam_4,
+            style: style_PenggunaanLahanTerancam_4_0,
+        });
+        bounds_group.addLayer(layer_PenggunaanLahanTerancam_4);
+        map.addLayer(layer_PenggunaanLahanTerancam_4);
+        function pop_ProjectIDSBatas_Desa_5(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['STATUS_KOT'] !== null ? Autolinker.link(String(feature.properties['STATUS_KOT'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['KODE_2008'] !== null ? Autolinker.link(String(feature.properties['KODE_2008'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['DESA_2008'] !== null ? Autolinker.link(String(feature.properties['DESA_2008'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['KEC_2008'] !== null ? Autolinker.link(String(feature.properties['KEC_2008'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['KAB_2008'] !== null ? Autolinker.link(String(feature.properties['KAB_2008'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['PROP_2008'] !== null ? Autolinker.link(String(feature.properties['PROP_2008'])) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_ProjectIDSBatas_Desa_5_0() {
+            return {
+                pane: 'pane_ProjectIDSBatas_Desa_5',
+                opacity: 1,
+                color: 'rgba(5,0,1,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(242,30,37,0.0)',
+            }
+        }
+        map.createPane('pane_ProjectIDSBatas_Desa_5');
+        map.getPane('pane_ProjectIDSBatas_Desa_5').style.zIndex = 405;
+        map.getPane('pane_ProjectIDSBatas_Desa_5').style['mix-blend-mode'] = 'normal';
+        var layer_ProjectIDSBatas_Desa_5 = new L.geoJson(json_ProjectIDSBatas_Desa_5, {
+            attribution: '<a href=""></a>',
+            pane: 'pane_ProjectIDSBatas_Desa_5',
+            onEachFeature: pop_ProjectIDSBatas_Desa_5,
+            style: style_ProjectIDSBatas_Desa_5_0,
+        });
+        bounds_group.addLayer(layer_ProjectIDSBatas_Desa_5);
+        map.addLayer(layer_ProjectIDSBatas_Desa_5);
+        function pop_DesaTerancam_6(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['STATUS_KOT'] !== null ? Autolinker.link(String(feature.properties['STATUS_KOT'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['KODE_2008'] !== null ? Autolinker.link(String(feature.properties['KODE_2008'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['DESA_2008'] !== null ? Autolinker.link(String(feature.properties['DESA_2008'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['KEC_2008'] !== null ? Autolinker.link(String(feature.properties['KEC_2008'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['KAB_2008'] !== null ? Autolinker.link(String(feature.properties['KAB_2008'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['PROP_2008'] !== null ? Autolinker.link(String(feature.properties['PROP_2008'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['ID'] !== null ? Autolinker.link(String(feature.properties['ID'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['KRB'] !== null ? Autolinker.link(String(feature.properties['KRB'])) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_DesaTerancam_6_0(feature) {
+            switch(String(feature.properties['DESA_2008'])) {
+                case 'ARGO MULYO':
+                    return {
+                pane: 'pane_DesaTerancam_6',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(213,28,90,1.0)',
+            }
+                    break;
+                case 'BANYU REJO':
+                    return {
+                pane: 'pane_DesaTerancam_6',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(212,194,25,1.0)',
+            }
+                    break;
+                case 'BIMO MARTANI':
+                    return {
+                pane: 'pane_DesaTerancam_6',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(28,214,220,1.0)',
+            }
+                    break;
+                case 'BOKO HARJO':
+                    return {
+                pane: 'pane_DesaTerancam_6',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(124,64,202,1.0)',
+            }
+                    break;
+                case 'CANDI BINANGUN':
+                    return {
+                pane: 'pane_DesaTerancam_6',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(21,216,44,1.0)',
+            }
+                    break;
+                case 'CATUR TUNGGAL':
+                    return {
+                pane: 'pane_DesaTerancam_6',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(236,54,88,1.0)',
+            }
+                    break;
+                case 'CONDONG CATUR':
+                    return {
+                pane: 'pane_DesaTerancam_6',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(81,226,144,1.0)',
+            }
+                    break;
+                case 'DONOHARJO':
+                    return {
+                pane: 'pane_DesaTerancam_6',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(82,168,217,1.0)',
+            }
+                    break;
+                case 'GIRI KERTO':
+                    return {
+                pane: 'pane_DesaTerancam_6',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(96,99,218,1.0)',
+            }
+                    break;
+                case 'GLAGAH HARJO':
+                    return {
+                pane: 'pane_DesaTerancam_6',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(204,118,120,1.0)',
+            }
+                    break;
+                case 'HARGO BINANGUN':
+                    return {
+                pane: 'pane_DesaTerancam_6',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(156,42,232,1.0)',
+            }
+                    break;
+                case 'KALI TIRTO':
+                    return {
+                pane: 'pane_DesaTerancam_6',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(100,150,202,1.0)',
+            }
+                    break;
+                case 'KEPUH HARJO':
+                    return {
+                pane: 'pane_DesaTerancam_6',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(191,58,205,1.0)',
+            }
+                    break;
+                case 'LUMBUNG REJO':
+                    return {
+                pane: 'pane_DesaTerancam_6',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(91,117,229,1.0)',
+            }
+                    break;
+                case 'MADU REJO':
+                    return {
+                pane: 'pane_DesaTerancam_6',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(29,218,79,1.0)',
+            }
+                    break;
+                case 'MAGUWOHARJO':
+                    return {
+                pane: 'pane_DesaTerancam_6',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(87,239,176,1.0)',
+            }
+                    break;
+                case 'MERDIKO REJO':
+                    return {
+                pane: 'pane_DesaTerancam_6',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(215,223,48,1.0)',
+            }
+                    break;
+                case 'PAKEM BINANGUN':
+                    return {
+                pane: 'pane_DesaTerancam_6',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(123,215,205,1.0)',
+            }
+                    break;
+                case 'PONDOK REJO':
+                    return {
+                pane: 'pane_DesaTerancam_6',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(205,79,29,1.0)',
+            }
+                    break;
+                case 'PURWO BINANGUN':
+                    return {
+                pane: 'pane_DesaTerancam_6',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(107,144,217,1.0)',
+            }
+                    break;
+                case 'PURWO MARTANI':
+                    return {
+                pane: 'pane_DesaTerancam_6',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(153,121,233,1.0)',
+            }
+                    break;
+                case 'SARDONOHARJO':
+                    return {
+                pane: 'pane_DesaTerancam_6',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(234,114,23,1.0)',
+            }
+                    break;
+                case 'SARI HARJO':
+                    return {
+                pane: 'pane_DesaTerancam_6',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(177,230,77,1.0)',
+            }
+                    break;
+                case 'SELO MARTANI':
+                    return {
+                pane: 'pane_DesaTerancam_6',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(236,35,132,1.0)',
+            }
+                    break;
+                case 'SINDUADI':
+                    return {
+                pane: 'pane_DesaTerancam_6',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(122,227,17,1.0)',
+            }
+                    break;
+                case 'SINDUHARJO':
+                    return {
+                pane: 'pane_DesaTerancam_6',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(209,20,171,1.0)',
+            }
+                    break;
+                case 'SINDUMARTANI':
+                    return {
+                pane: 'pane_DesaTerancam_6',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(111,197,220,1.0)',
+            }
+                    break;
+                case 'SUKO HARJO':
+                    return {
+                pane: 'pane_DesaTerancam_6',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(174,82,205,1.0)',
+            }
+                    break;
+                case 'SUMBER REJO':
+                    return {
+                pane: 'pane_DesaTerancam_6',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(200,93,161,1.0)',
+            }
+                    break;
+                case 'TAMAN MARTANI':
+                    return {
+                pane: 'pane_DesaTerancam_6',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(110,224,84,1.0)',
+            }
+                    break;
+                case 'TEGAL TIRTO':
+                    return {
+                pane: 'pane_DesaTerancam_6',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(79,200,18,1.0)',
+            }
+                    break;
+                case 'TIRTO MARTANI':
+                    return {
+                pane: 'pane_DesaTerancam_6',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(129,236,125,1.0)',
+            }
+                    break;
+                case 'UMBUL HARJO':
+                    return {
+                pane: 'pane_DesaTerancam_6',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(183,217,44,1.0)',
+            }
+                    break;
+                case 'UMBULMARTANI':
+                    return {
+                pane: 'pane_DesaTerancam_6',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(107,86,239,1.0)',
+            }
+                    break;
+                case 'WEDOMARTANI':
+                    return {
+                pane: 'pane_DesaTerancam_6',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(223,137,124,1.0)',
+            }
+                    break;
+                case 'WIDODO MARTANI':
+                    return {
+                pane: 'pane_DesaTerancam_6',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(63,200,164,1.0)',
+            }
+                    break;
+                case 'WONO KERTO':
+                    return {
+                pane: 'pane_DesaTerancam_6',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(238,171,75,1.0)',
+            }
+                    break;
+                case 'WUKIR SARI':
+                    return {
+                pane: 'pane_DesaTerancam_6',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(203,77,197,1.0)',
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_DesaTerancam_6');
+        map.getPane('pane_DesaTerancam_6').style.zIndex = 406;
+        map.getPane('pane_DesaTerancam_6').style['mix-blend-mode'] = 'normal';
+        var layer_DesaTerancam_6 = new L.geoJson(json_DesaTerancam_6, {
+            attribution: '<a href=""></a>',
+            pane: 'pane_DesaTerancam_6',
+            onEachFeature: pop_DesaTerancam_6,
+            style: style_DesaTerancam_6_0,
+        });
+        bounds_group.addLayer(layer_DesaTerancam_6);
+        map.addLayer(layer_DesaTerancam_6);
+        function pop_Kecamatan_7(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['STATUS_KOT'] !== null ? Autolinker.link(String(feature.properties['STATUS_KOT'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['KODE_2008'] !== null ? Autolinker.link(String(feature.properties['KODE_2008'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['DESA_2008'] !== null ? Autolinker.link(String(feature.properties['DESA_2008'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['KEC_2008'] !== null ? Autolinker.link(String(feature.properties['KEC_2008'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['KAB_2008'] !== null ? Autolinker.link(String(feature.properties['KAB_2008'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['PROP_2008'] !== null ? Autolinker.link(String(feature.properties['PROP_2008'])) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Kecamatan_7_0() {
+            return {
+                pane: 'pane_Kecamatan_7',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(90,0,225,0.0)',
+            }
+        }
+        map.createPane('pane_Kecamatan_7');
+        map.getPane('pane_Kecamatan_7').style.zIndex = 407;
+        map.getPane('pane_Kecamatan_7').style['mix-blend-mode'] = 'normal';
+        var layer_Kecamatan_7 = new L.geoJson(json_Kecamatan_7, {
+            attribution: '<a href=""></a>',
+            pane: 'pane_Kecamatan_7',
+            onEachFeature: pop_Kecamatan_7,
+            style: style_Kecamatan_7_0,
+        });
+        bounds_group.addLayer(layer_Kecamatan_7);
+        map.addLayer(layer_Kecamatan_7);
+        function pop_ProjectIDSFasilitas_Umum_8(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['ID'] !== null ? Autolinker.link(String(feature.properties['ID'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['NAMA'] !== null ? Autolinker.link(String(feature.properties['NAMA'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Fungsi'] !== null ? Autolinker.link(String(feature.properties['Fungsi'])) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_ProjectIDSFasilitas_Umum_8_0() {
+            return {
+                pane: 'pane_ProjectIDSFasilitas_Umum_8',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(166,249,22,1.0)',
+            }
+        }
+        map.createPane('pane_ProjectIDSFasilitas_Umum_8');
+        map.getPane('pane_ProjectIDSFasilitas_Umum_8').style.zIndex = 408;
+        map.getPane('pane_ProjectIDSFasilitas_Umum_8').style['mix-blend-mode'] = 'normal';
+        function pointToLayer_ProjectIDSFasilitas_Umum_8_0(feature, latlng) {
+            var context = {
+                feature: feature,
+                variables: {}
+            };
+            return L.circleMarker(latlng, style_ProjectIDSFasilitas_Umum_8_0(feature));
+        }
+        var layer_ProjectIDSFasilitas_Umum_8 = L.geoJson(null, {
+            attribution: '<a href=""></a>',
+            pane: 'pane_ProjectIDSFasilitas_Umum_8',
+            pointToLayer: pointToLayer_ProjectIDSFasilitas_Umum_8_0, 
+            onEachFeature: pop_ProjectIDSFasilitas_Umum_8
+        });
+        function getProjectIDSFasilitas_Umum_8Json(geojson) {
+            layer_ProjectIDSFasilitas_Umum_8.addData(geojson);
+            setBounds();
+        };
+        bounds_group.addLayer(layer_ProjectIDSFasilitas_Umum_8);
+        map.addLayer(layer_ProjectIDSFasilitas_Umum_8);
+        var osmGeocoder = new L.Control.OSMGeocoder({
+            collapsed: false,
+            position: 'topright',
+            text: 'Search',
+        });
+        osmGeocoder.addTo(map);
+        var baseMaps = {};
+        L.control.layers(baseMaps,{'<img src="legend/ProjectIDSFasilitas_Umum_8.png" /> Project-IDS:Fasilitas_Umum': layer_ProjectIDSFasilitas_Umum_8,'<img src="legend/Kecamatan_7.png" /> Kecamatan': layer_Kecamatan_7,'Desa Terancam<br /><table><tr><td style="text-align: center;"><img src="legend/DesaTerancam_6_ARGOMULYO0.png" /></td><td>ARGO MULYO</td></tr><tr><td style="text-align: center;"><img src="legend/DesaTerancam_6_BANYUREJO1.png" /></td><td>BANYU REJO</td></tr><tr><td style="text-align: center;"><img src="legend/DesaTerancam_6_BIMOMARTANI2.png" /></td><td>BIMO MARTANI</td></tr><tr><td style="text-align: center;"><img src="legend/DesaTerancam_6_BOKOHARJO3.png" /></td><td>BOKO HARJO</td></tr><tr><td style="text-align: center;"><img src="legend/DesaTerancam_6_CANDIBINANGUN4.png" /></td><td>CANDI BINANGUN</td></tr><tr><td style="text-align: center;"><img src="legend/DesaTerancam_6_CATURTUNGGAL5.png" /></td><td>CATUR TUNGGAL</td></tr><tr><td style="text-align: center;"><img src="legend/DesaTerancam_6_CONDONGCATUR6.png" /></td><td>CONDONG CATUR</td></tr><tr><td style="text-align: center;"><img src="legend/DesaTerancam_6_DONOHARJO7.png" /></td><td>DONOHARJO</td></tr><tr><td style="text-align: center;"><img src="legend/DesaTerancam_6_GIRIKERTO8.png" /></td><td>GIRI KERTO</td></tr><tr><td style="text-align: center;"><img src="legend/DesaTerancam_6_GLAGAHHARJO9.png" /></td><td>GLAGAH HARJO</td></tr><tr><td style="text-align: center;"><img src="legend/DesaTerancam_6_HARGOBINANGUN10.png" /></td><td>HARGO BINANGUN</td></tr><tr><td style="text-align: center;"><img src="legend/DesaTerancam_6_KALITIRTO11.png" /></td><td>KALI TIRTO</td></tr><tr><td style="text-align: center;"><img src="legend/DesaTerancam_6_KEPUHHARJO12.png" /></td><td>KEPUH HARJO</td></tr><tr><td style="text-align: center;"><img src="legend/DesaTerancam_6_LUMBUNGREJO13.png" /></td><td>LUMBUNG REJO</td></tr><tr><td style="text-align: center;"><img src="legend/DesaTerancam_6_MADUREJO14.png" /></td><td>MADU REJO</td></tr><tr><td style="text-align: center;"><img src="legend/DesaTerancam_6_MAGUWOHARJO15.png" /></td><td>MAGUWOHARJO</td></tr><tr><td style="text-align: center;"><img src="legend/DesaTerancam_6_MERDIKOREJO16.png" /></td><td>MERDIKO REJO</td></tr><tr><td style="text-align: center;"><img src="legend/DesaTerancam_6_PAKEMBINANGUN17.png" /></td><td>PAKEM BINANGUN</td></tr><tr><td style="text-align: center;"><img src="legend/DesaTerancam_6_PONDOKREJO18.png" /></td><td>PONDOK REJO</td></tr><tr><td style="text-align: center;"><img src="legend/DesaTerancam_6_PURWOBINANGUN19.png" /></td><td>PURWO BINANGUN</td></tr><tr><td style="text-align: center;"><img src="legend/DesaTerancam_6_PURWOMARTANI20.png" /></td><td>PURWO MARTANI</td></tr><tr><td style="text-align: center;"><img src="legend/DesaTerancam_6_SARDONOHARJO21.png" /></td><td>SARDONOHARJO</td></tr><tr><td style="text-align: center;"><img src="legend/DesaTerancam_6_SARIHARJO22.png" /></td><td>SARI HARJO</td></tr><tr><td style="text-align: center;"><img src="legend/DesaTerancam_6_SELOMARTANI23.png" /></td><td>SELO MARTANI</td></tr><tr><td style="text-align: center;"><img src="legend/DesaTerancam_6_SINDUADI24.png" /></td><td>SINDUADI</td></tr><tr><td style="text-align: center;"><img src="legend/DesaTerancam_6_SINDUHARJO25.png" /></td><td>SINDUHARJO</td></tr><tr><td style="text-align: center;"><img src="legend/DesaTerancam_6_SINDUMARTANI26.png" /></td><td>SINDUMARTANI</td></tr><tr><td style="text-align: center;"><img src="legend/DesaTerancam_6_SUKOHARJO27.png" /></td><td>SUKO HARJO</td></tr><tr><td style="text-align: center;"><img src="legend/DesaTerancam_6_SUMBERREJO28.png" /></td><td>SUMBER REJO</td></tr><tr><td style="text-align: center;"><img src="legend/DesaTerancam_6_TAMANMARTANI29.png" /></td><td>TAMAN MARTANI</td></tr><tr><td style="text-align: center;"><img src="legend/DesaTerancam_6_TEGALTIRTO30.png" /></td><td>TEGAL TIRTO</td></tr><tr><td style="text-align: center;"><img src="legend/DesaTerancam_6_TIRTOMARTANI31.png" /></td><td>TIRTO MARTANI</td></tr><tr><td style="text-align: center;"><img src="legend/DesaTerancam_6_UMBULHARJO32.png" /></td><td>UMBUL HARJO</td></tr><tr><td style="text-align: center;"><img src="legend/DesaTerancam_6_UMBULMARTANI33.png" /></td><td>UMBULMARTANI</td></tr><tr><td style="text-align: center;"><img src="legend/DesaTerancam_6_WEDOMARTANI34.png" /></td><td>WEDOMARTANI</td></tr><tr><td style="text-align: center;"><img src="legend/DesaTerancam_6_WIDODOMARTANI35.png" /></td><td>WIDODO MARTANI</td></tr><tr><td style="text-align: center;"><img src="legend/DesaTerancam_6_WONOKERTO36.png" /></td><td>WONO KERTO</td></tr><tr><td style="text-align: center;"><img src="legend/DesaTerancam_6_WUKIRSARI37.png" /></td><td>WUKIR SARI</td></tr></table>': layer_DesaTerancam_6,'<img src="legend/ProjectIDSBatas_Desa_5.png" /> Project-IDS:Batas_Desa': layer_ProjectIDSBatas_Desa_5,'<img src="legend/PenggunaanLahanTerancam_4.png" /> Penggunaan Lahan Terancam': layer_PenggunaanLahanTerancam_4,'Project-IDS:Guna_Lahan<br /><table><tr><td style="text-align: center;"><img src="legend/ProjectIDSGuna_Lahan_3_BANDARA0.png" /></td><td>BANDARA</td></tr><tr><td style="text-align: center;"><img src="legend/ProjectIDSGuna_Lahan_3_BELUKARSEMAK1.png" /></td><td>BELUKAR/SEMAK</td></tr><tr><td style="text-align: center;"><img src="legend/ProjectIDSGuna_Lahan_3_HUTAN2.png" /></td><td>HUTAN</td></tr><tr><td style="text-align: center;"><img src="legend/ProjectIDSGuna_Lahan_3_KEBUN3.png" /></td><td>KEBUN</td></tr><tr><td style="text-align: center;"><img src="legend/ProjectIDSGuna_Lahan_3_PASIRDARAT4.png" /></td><td>PASIR DARAT</td></tr><tr><td style="text-align: center;"><img src="legend/ProjectIDSGuna_Lahan_3_PEMUKIMAN5.png" /></td><td>PEMUKIMAN</td></tr><tr><td style="text-align: center;"><img src="legend/ProjectIDSGuna_Lahan_3_RUMPUT6.png" /></td><td>RUMPUT</td></tr><tr><td style="text-align: center;"><img src="legend/ProjectIDSGuna_Lahan_3_SAWAHIRIGASI7.png" /></td><td>SAWAH IRIGASI</td></tr><tr><td style="text-align: center;"><img src="legend/ProjectIDSGuna_Lahan_3_SAWAHTADAHHUJAN8.png" /></td><td>SAWAH TADAH HUJAN</td></tr><tr><td style="text-align: center;"><img src="legend/ProjectIDSGuna_Lahan_3_TANAHBERBATU9.png" /></td><td>TANAH BERBATU</td></tr><tr><td style="text-align: center;"><img src="legend/ProjectIDSGuna_Lahan_3_TEGALAN10.png" /></td><td>TEGALAN</td></tr><tr><td style="text-align: center;"><img src="legend/ProjectIDSGuna_Lahan_3_TUBUHAIR11.png" /></td><td>TUBUH AIR</td></tr></table>': layer_ProjectIDSGuna_Lahan_3,'Project-IDS:KRB_Merapi<br /><table><tr><td style="text-align: center;"><img src="legend/ProjectIDSKRB_Merapi_2_KRB10.png" /></td><td>KRB 1</td></tr><tr><td style="text-align: center;"><img src="legend/ProjectIDSKRB_Merapi_2_KRB21.png" /></td><td>KRB 2</td></tr><tr><td style="text-align: center;"><img src="legend/ProjectIDSKRB_Merapi_2_KRB32.png" /></td><td>KRB 3</td></tr></table>': layer_ProjectIDSKRB_Merapi_2,"Citra_Sleman": overlay_Citra_Sleman_1,"Project-IDS:DEM_Sleman": overlay_ProjectIDSDEM_Sleman_0,},{collapsed:false}).addTo(map);
+        L.ImageOverlay.include({
+            getBounds: function () {
+                return this._bounds;
+            }
+        });
+        </script>
+        <script src='http://localhost:8080/geoserver/Project-IDS/wfs?SERVICE=WFS&VERSION=1.0.0&REQUEST=GetFeature&TYPENAME=Project-IDS:Fasilitas_Umum&SRSNAME=EPSG:4326&outputFormat=text%2Fjavascript&format_options=callback%3AgetProjectIDSFasilitas_Umum_8Json'></script>
+    </body>
+</html>
